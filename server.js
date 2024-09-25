@@ -10,6 +10,10 @@ const PORT = process.env.PORT || 3000;
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_GROUP_ID = process.env.TELEGRAM_GROUP_ID;
 
+const cors = require('cors');
+
+app.use(cors());  // Enable CORS for all requests
+
 // API to generate one-time-use Telegram invite link
 app.get('/generate-link', async (req, res) => {
   try {
