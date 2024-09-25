@@ -16,23 +16,27 @@ app.use(cors());  // Enable CORS for all requests
 
 // API to generate one-time-use Telegram invite link
 app.get('/generate-link', async (req, res) => {
-  try {
-    const response = await axios.post(
-      `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/exportChatInviteLink`,
-      {
-        chat_id: TELEGRAM_GROUP_ID,
+    try {
+      const response = await axios.post(
+        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/exportChatInviteLink`,
+        {
+          chat_id: TELEGRAM_GROUP_ID,
+        }
+      );
+  
+      if (response.data.ok) {
+        console.log('Invite link generated:', response.data.result);
+        res.status(200).json({ inviteLink: response.data.result });
+      } else {
+        console.log('Telegram API Error:', response.data);
+        res.status(500).json({ error: 'Failed to generate link' });
       }
-    );
-
-    if (response.data.ok) {
-      res.status(200).json({ inviteLink: response.data.result });
-    } else {
-      res.status(500).json({ error: 'Failed to generate link' });
+    } catch (error) {
+      console.error('Server error:', error.message);
+      res.status(500).json({ error: 'Server error' });
     }
-  } catch (error) {
-    res.status(500).json({ error: 'Server error' });
-  }
-});
+  });
+  
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
