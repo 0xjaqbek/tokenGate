@@ -110,7 +110,6 @@ app.get('/generate-link', async (req, res) => {
             `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/createChatInviteLink`,
             {
                 chat_id: TELEGRAM_GROUP_ID,
-                expire_date: Math.floor(Date.now() / 1000) + 3600,  // Optional: expire after 1 hour
                 member_limit: 1  // Limit the invite link to one use
             }
         );
